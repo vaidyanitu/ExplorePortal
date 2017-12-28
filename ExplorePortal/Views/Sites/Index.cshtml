@@ -32,7 +32,7 @@
                         <p>
                             <center>
                                 find by site or location:<br/>
-                                <input type="text" style="background-color:none; border:none" id="searchString" /><input type="submit" value="  " id="search" class="btnbg" />
+                                <input type="text" style="background-color:none; border:none" id="searchString" onkeypress="searchItemKey()" /><input type="submit" value="  " id="search" class="btnbg" />
                                 @*@Html.TextBox("searchString")*@
                             </center>
                         </p>
@@ -66,18 +66,32 @@
         });
         
     $("#search").click(function () {
-        var searchdata=$("#searchString").val();
+        searchItem();
+    })
+
+
+    function searchItem() {
+        var searchdata = $("#searchString").val();
         $.ajax({
             url: '/SiteTag/GetSiteByTag',
             contentType: "application/json; charset=utf-8",
             type: 'GET',
-            data:{searchString:searchdata},
+            data: { searchString: searchdata },
             cache: false,
-            success: function (result) {                
+            success: function (result) {
                 $('#displaypanel').html(result);
             }
         })
-    })
+    }
+
+    function searchItemKey() {
+        var a = this.event;
+            var keycode = (a.keyCode ? a.keyCode : a.which);
+            if (keycode == '13') {
+                searchItem();
+            }
+        }
+    
 </script>
  
 }
