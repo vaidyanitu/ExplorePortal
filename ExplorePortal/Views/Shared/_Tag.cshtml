@@ -1,0 +1,42 @@
+﻿<style>
+    #sortable1, #sortable2 {
+        width: 300px;
+        min-height: 50px;
+        list-style-type: none;
+        margin: 0;
+        padding: 5px 0 0 0;
+        float: left;
+        margin-right: 10px;
+        border: 1px solid gray;
+        overflow-y: auto;
+        max-height: 200px;
+    }
+
+        #sortable1 li, #sortable2 li {
+            margin: 0 5px 5px 5px;
+            padding: 5px;
+            font-size: 1.2em;
+            border: 1px solid gray;
+            display: inline-block;
+        }
+</style>
+
+<div class="col-md-10" id="TagCollection">
+    <div class="col-md-6"><ul id="sortable2" class="connectedSortable"></ul></div>
+    <div class="col-md-6">
+        <ul id="sortable1" class="connectedSortable">
+            @foreach (var item in ViewBag.Tags)
+            {
+                <li id="@item.TagName">@item.TagName</li>
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#sortable1, #sortable2").sortable({
+            connectWith: ".connectedSortable"
+        }).disableSelection();
+    });
+</script>

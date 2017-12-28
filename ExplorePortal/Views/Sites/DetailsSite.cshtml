@@ -1,0 +1,63 @@
+﻿@model ExploreModel.Site
+
+
+@{
+    ViewBag.Title = "Details";
+    Layout="~/Views/Shared/Layout2.cshtml";
+}
+@section Head{
+Details}
+
+
+
+@section body{
+<div id="displaypanel">
+    <style>
+        IMG.displayed {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    @{var desc = Model.SiteDescription;}
+    <div>
+        @{ byte[] photo = Model.Photo;
+         string imageSrc = null;
+         if (photo != null)
+         {
+             var imageBase64 = Convert.ToBase64String(Model.Photo.ToArray());
+             imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
+         }
+        }
+        <img src="@imageSrc" alt="Image" id="pic" class="displayed" height="600px" width="1000px" />
+    </div>
+   
+    <div class="blog-desc">
+        <h2> @Html.DisplayFor(model => model.SiteName)</h2>
+    </div><br /><br />
+
+    <div class="single-blog">
+
+        <div>             
+                 
+            <h3>  @Html.DisplayFor(model => model.SiteLocation)</h3><br/> 
+             
+               
+              
+            <h4>  @Html.Raw(@desc)</h4> 
+            
+        </div>
+        <br/>
+        <p>
+            @Html.ActionLink("Edit", "EditSite", new { id = Model.SiteId }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
+    </div>
+}
+@section Tags{
+    @foreach (var item in ViewBag.Tags)
+    {
+        <button id="@item.TagName">@item.TagName</button>
+    }}
+

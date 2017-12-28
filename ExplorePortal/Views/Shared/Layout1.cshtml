@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    @Styles.Render("~/Content/css")
+
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div>@RenderBody()</div>
+</body>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
+</html>

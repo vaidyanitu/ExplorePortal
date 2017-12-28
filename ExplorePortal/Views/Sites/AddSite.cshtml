@@ -1,0 +1,311 @@
+﻿@model ExploreModel.Site
+<link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
+<script src="~/Scripts/summernote/summernote.js"></script>
+@{
+    ViewBag.Title = "AddSite";
+    //Layout = "~/Views/Shared/Layout1.cshtml";
+   }
+
+
+<style>
+    #div1, #div2 {
+        float: left;
+        height:80px;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid gray;
+        overflow:auto;
+    }
+
+       .btnstyle {
+        background-color: #008CBA;
+        color: white;
+        border: 2px solid #e7e7e7;
+        font-family: inherit;
+        cursor: pointer;
+        display: inline-block;
+        letter-spacing: 1px;
+        outline: none;
+        float: right;
+        position: relative;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+</style>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "AddSite" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+      
+        @Html.ValidationSummary(true)
+        <div class="col-md-3">
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.Photo, new { @class = "control-label col-md-2" })*@
+                <div class="col-md-10">
+                    @{ byte[] photo = null;
+                       string imageSrc = null;
+                       if (photo != null)
+                       {
+                           var imageBase64 = Convert.ToBase64String(Model.Photo.ToArray());
+                           imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
+                       }
+                    }
+
+                    <img src="@imageSrc" alt="Image" height="100" width="100" id="pic" />
+                    <input type="file" id="file" name="file">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SiteName, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SiteName)
+                    @Html.ValidationMessageFor(model => model.SiteName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SiteLocation, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SiteLocation)
+                    @Html.ValidationMessageFor(model => model.SiteLocation)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SiteDescription, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.SiteDescription, new { @class = "form-control", @rows = "5", @cols = "50" })
+                    @Html.ValidationMessageFor(model => model.SiteDescription)
+                </div>
+            </div>
+            
+                <div class="form-group">
+                    <p class="col-md-2">Add Tags</p>
+               
+                    @*<div class="col-md-10" id="TagCollection">*@
+                        @*<div id="div2" class="connectedSortable" ondrop="drop(event)" ondragover="allowDrop(event)" class="col-md-5"></div>
+                        <div id="div1" class="connectedSortable" ondrop="drop(event)" ondragover="allowDrop(event)" class="col-md-5">*@
+                        @*<div class="col-md-6"><ul id="sortable2" class="connectedSortable"></ul></div>*@  
+                        @*<div class="col-md-6"><ul id="sortable1" class="connectedSortable">
+                                @foreach (var item in ViewBag.Tags)
+                            {
+                            <li id="@item.TagName">@item.TagName</li>
+                            @*<button id="@item.TagName" formnovalidate draggable="true" ondragstart="drag(event)" style="align-content:center">@item.TagName</button>*@
+                            @*}*@
+                            @*</ul></div>*@
+                        @*</div>*@
+                    <div class="col-md-10" id="TagCollection">
+                        @{Html.RenderPartial("_Tag", (List<ExploreModel.Tag>)ViewBag.Tags);}
+                        <br />
+                    </div>
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Tag</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Add Tag</h4>
+                                </div>
+                                <div class="modal-body">
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        <h4>Tag</h4>
+                                        <hr />
+                                        @Html.ValidationSummary(true)
+
+                                        <div class="form-group">
+                                            @Html.Label("TagName", new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.Editor("TagName", new { @id = "TagName" })
+                                                <h5><font color="red" id="message" hidden>Tag Name missing</font></h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="button" value="Add Tag" onclick="opentagform()" class="btn btn-default" /><br/>                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+
+
+
+             @*</div>*@
+           
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <br /><br />
+                        <input type="button" value="Create" class="btn btnstyle"  id="SiteCreate" />
+                    </div>
+                </div>
+            </div>
+   </div>
+}
+
+
+
+<div>
+    <br/><br/>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval","~/Content/summernote", "~/bundle/summernote")
+}
+@section Title{<h2>Add Site</h2>}
+
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script type="text/javascript">
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+
+            reader.onload = function (e) {
+                $('#pic').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#file").change(function () {
+        readURL(this);
+    });
+
+</script>
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+       
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+        var a = ev.target.getData;
+        
+    }
+
+   
+</script>
+
+
+
+
+<script>
+    $("#SiteCreate").click(function (event) {
+        if($("#AddSite").valid()){
+            var sitename = $("#SiteName").val();
+            var siteLocation = $("#SiteLocation").val();
+            var markupStr = encodeURIComponent($("#SiteDescription").summernote('code'));
+            //var siteDescription = $("#SiteDescription").val();
+            var matches = [];
+            var searchEles = document.getElementById("sortable2").children;
+            for (var i = 0; i < searchEles.length; i++) {
+
+                matches.push(searchEles[i].id);
+
+            }
+       
+            var formdata = new FormData();
+            formdata.append("SiteName", sitename);
+            formdata.append("SiteDescription", markupStr);
+            formdata.append("SiteLocation", siteLocation);
+            formdata.append("matches", matches);
+            formdata.append("file", $("#file")[0].files[0]);
+
+            $.ajax({
+                url: '/Sites/AddModelTag',
+                type: 'post',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (data) {
+                    // ..... any success code you want
+                
+                    window.location=data.redirecturl;
+                }
+            })
+        }
+        })
+</script>
+<script>
+    $(document).ready(function () {
+        $('#SiteDescription').summernote( {
+            height: 300,                 // set editor height
+            minHeight: null,             // set minimum height of editor
+            maxHeight: null,             // set maximum height of editor
+            focus: true                  // set focus to editable area after initializing summernote
+        });
+
+      
+              //$( function() {
+              //    $( "#sortable1, #sortable2" ).sortable({
+              //        connectWith: ".connectedSortable"
+              //    }).disableSelection();
+              //} );   
+        
+       });
+    $("#TagName").keyup(function () {
+        if($("#TagName").val()==""){
+            $("#message").show();
+            $("#TagName").focus();
+        }
+        else {
+            $("#message").hide();
+            }
+    })
+
+    function opentagform() {
+        $("#message").hide();
+        if (!$("#TagName").val()=="") {
+            var formdata = new FormData();
+            formdata.append("TagName", $("#TagName").val());
+            $.ajax({
+                url: '/Tag/AddTag',
+                type: 'post',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formdata,
+                success: function (data) {
+                    // ..... any success code you want
+
+                    //window.location.href = data.redirecturl;
+                    //$("#TagCollection").load(document.URL +  ' #TagCollection');   
+                    $("#TagCollection").html(data);
+                                }
+            })
+        }
+        else {
+            $("#message").show();
+            $("#TagName").focus();
+        }
+    }
+</script>

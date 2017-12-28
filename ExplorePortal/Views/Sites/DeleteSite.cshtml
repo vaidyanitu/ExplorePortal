@@ -1,0 +1,67 @@
+﻿@model ExploreModel.Site
+
+@{
+    ViewBag.Title = "DeleteSite";
+}
+
+<h2>DeleteSite</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Site</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @{var desc = Model.SiteDescription;}
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SiteName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteLocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SiteLocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteDescription)
+        </dt>
+
+        <dd>
+            @Html.Raw(@desc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo)
+        </dt>
+
+        <dd>
+
+            @{ byte[] photo = Model.Photo;
+             string imageSrc = null;
+             if (photo != null)
+             {
+                 var imageBase64 = Convert.ToBase64String(Model.Photo.ToArray());
+                 imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
+             }
+            }
+
+            <img src="@imageSrc" alt="Image" height="100" width="100" />
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

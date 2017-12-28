@@ -1,0 +1,87 @@
+﻿@*@model IEnumerable<ExploreModel.Site>*@
+           @model PagedList.IPagedList<ExploreModel.Site>
+                      @using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout2.cshtml";
+}
+
+
+
+@section Head{
+       @Html.ActionLink("Add Site", "AddSite")
+  }
+
+@section body{
+    <style>
+        .btnbg {
+            background-image: url("../images/search.png");
+            border-image-slice:100%;
+        }
+    </style>
+
+            <div id="displaypanel"></div>
+               
+                    
+     }
+       
+                    @section Search{
+                    @*@using (Html.BeginForm())
+                    {*@
+                        
+                        <p>
+                            <center>
+                                find by site or location:<br/>
+                                <input type="text" style="background-color:none; border:none" id="searchString" /><input type="submit" value="  " id="search" class="btnbg" />
+                                @*@Html.TextBox("searchString")*@
+                            </center>
+                        </p>
+                    @*}
+                        @Html.Partial("~/Views/Shared/_SearchSitesPartial.cshtml");
+                        }*@
+                        }
+
+          
+          
+         
+                @section Tags{
+                @foreach (var item in ViewBag.Tags)
+                {
+                    <button id="@item.TagName" >@item.TagName</button>
+                }}
+           
+       
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/SiteTag/GetSiteByTag',
+                contentType: "application/json; charset=utf-8",              
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#displaypanel').html(result);
+                }
+            })
+        });
+        
+    $("#search").click(function () {
+        var searchdata=$("#searchString").val();
+        $.ajax({
+            url: '/SiteTag/GetSiteByTag',
+            contentType: "application/json; charset=utf-8",
+            type: 'GET',
+            data:{searchString:searchdata},
+            cache: false,
+            success: function (result) {                
+                $('#displaypanel').html(result);
+            }
+        })
+    })
+</script>
+ 
+}
+
+
+
+
