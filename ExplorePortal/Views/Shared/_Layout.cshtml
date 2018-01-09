@@ -46,7 +46,7 @@
             </div>
             <div class="cssmenu">
                 <ul>
-                    <li class="active"><a href="/Explore">Home</a></li>
+                    <li class="active" id="Home"><a href="/Explore">Home</a></li>
                     <li>
                         @if (Request.IsAuthenticated)
                         {
@@ -57,9 +57,9 @@
                             @Html.ActionLink("Login", "Login", "Account", null, null)
                         }
                 </li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li id="Blog"><a href="blog.html">Blog</a></li>
+                    <li id="About"><a href="about.html">About Us</a></li>
+                    <li id="Contact"><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="clear"></div>
@@ -126,6 +126,19 @@
                 }
             });
         });
+
+        $(function () {
+            $('li').click(function () {
+                localStorage.setItem('thisLink', $(this).attr('id'));
+            });
+
+            var thisLink = localStorage.getItem('thisLink');
+            if (thisLink) {
+                $('li.active').removeClass('active');
+                $('#' + thisLink).addClass('active');
+            }
+        });
+
     </script>
     <div class="footer">
         <div class="footer-top">

@@ -1,0 +1,84 @@
+﻿@*@model IEnumerable<ExploreModel.Site>*@
+@model PagedList.IPagedList<ExploreModel.Site>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "SiteByAuthor";
+    Layout = "~/Views/Shared/Layout2.cshtml";
+
+}
+@section Head{
+My Blog
+}
+
+@section body{
+    <style>
+        .btnbg {
+            background-image: url("../images/search.png");
+            border-image-slice: 100%;
+        }
+    </style>
+
+    <div id="displaypanel">
+        @Html.Partial("~/Views/SiteTag/GetSiteByTagPartial.cshtml", Model, new ViewDataDictionary { { "userId", @ViewBag.userId } })
+    </div>
+
+    
+}
+
+@section Search{
+       <div class="project-list">
+        <div class="search_box">
+            <p>
+                <center>
+                    find by site or location:<br />
+                    <input type="text" style="background-color:none; border:none" id="searchString" onkeypress="searchItemKey()" /><input type="submit" value="  " id="search" class="btnbg" />                  
+                </center>
+            </p>
+        </div>
+    </div>
+}
+
+@section Tags{
+    @foreach (var item in ViewBag.Tags)
+    {
+        <button id="@item.TagName">@item.TagName</button>
+    }}
+
+@section scripts{
+<script>
+    $("#search").click(function () {
+        searchItem();
+    })
+
+
+    function searchItem() {
+        var searchdata = $("#searchString").val();
+        $.ajax({
+            url: '/SiteTag/GetSiteByTag',
+            contentType: "application/json; charset=utf-8",
+            type: 'GET',
+            data: { searchString: searchdata },
+            cache: false,
+            success: function (result) {
+                $('#displaypanel').html(result);
+            }
+        })
+    }
+
+    function searchItemKey() {
+        var a = this.event;
+        var keycode = (a.keyCode ? a.keyCode : a.which);
+        if (keycode == '13') {
+            searchItem();
+        }
+    }
+</script>
+}
+
+@section Paging{
+ <!--Code to show curent page and page number-->
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page }))
+}

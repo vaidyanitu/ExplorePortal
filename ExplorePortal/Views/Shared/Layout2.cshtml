@@ -47,19 +47,19 @@
                 <a href="index.html"><img src="images/logo.png" alt="" /></a>
             </div>
             <div class="cssmenu">
-                <ul>
-                    <li class="active"><a href="/Explore">Home</a></li>
+                <ul id="menu">
+                    <li class="active" id="Home"><a href="/Explore">Home</a></li>
                     @if (Request.IsAuthenticated)
-                        {
-                        <li><a><label id="Logout">Logout</label></a></li>
-                        <li><a>@Html.ActionLink("MyBlog", "Index", "SiteAuthor", null, null)</a></li>
+{
+    <li id="Log"><a><label id="Logout">Logout</label></a></li>
+                    <li id="MyBlog">@Html.ActionLink("MyBlog", "Index", "SiteAuthor", null, null)</li>
                         }
                         else
                         {
-                        <li><a>@Html.ActionLink("Login","Login","Account",null,null)</a></li>
+                    <li id="LogIn">@Html.ActionLink("Login","Login","Account",null,null)</li>
                         }                 
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li id="About"><a href="about.html">About Us</a></li>
+                    <li id="Contact"><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="clear"></div>
@@ -237,6 +237,8 @@
     @RenderSection("scripts", required: false)
 
     <script>
+        
+
         $(":button").click(function (e) {
             var a = $(this).attr('id');
             $.ajax({
@@ -260,6 +262,26 @@
                     window.location.href = '/explore';
                 }
             });
+        });
+
+        //$("ul li").click(function () {
+        //    //Removes the active class from any <li> elements
+        //    $('li.active').removeClass('active');
+        //    //Adds it to the current element
+        //    $(this).addClass('active');
+
+        //});
+
+        $(function () {
+            $('li').click(function () {
+                localStorage.setItem('thisLink', $(this).attr('id'));
+            });
+
+            var thisLink = localStorage.getItem('thisLink');
+            if (thisLink) {
+                $('li.active').removeClass('active');
+                $('#' + thisLink).addClass('active');
+            }
         });
 
     </script>
