@@ -170,6 +170,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SiteAuthorController.cs" />
     <Compile Include="Controllers\SitesController.cs" />
     <Compile Include="Controllers\SiteTagController.cs" />
     <Compile Include="Controllers\TagController.cs" />
@@ -204,6 +205,14 @@
     <Compile Include="Migrations\201712270704581_authentication test.cs" />
     <Compile Include="Migrations\201712270704581_authentication test.Designer.cs">
       <DependentUpon>201712270704581_authentication test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712280908166_authorid added.cs" />
+    <Compile Include="Migrations\201712280908166_authorid added.Designer.cs">
+      <DependentUpon>201712280908166_authorid added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712280915393_authorid for sites modified.cs" />
+    <Compile Include="Migrations\201712280915393_authorid for sites modified.Designer.cs">
+      <DependentUpon>201712280915393_authorid for sites modified.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -488,9 +497,11 @@
     <Content Include="Views\SiteTag\GetSiteByTagPartial.cshtml" />
     <Content Include="Views\Account\View1.cshtml" />
     <Content Include="Views\Shared\_SearchSitesPartial.cshtml" />
+    <Content Include="Views\SiteAuthor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="BLL\" />
     <Folder Include="obj\" />
   </ItemGroup>
   <ItemGroup>
@@ -527,6 +538,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712270704581_authentication test.resx">
       <DependentUpon>201712270704581_authentication test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712280908166_authorid added.resx">
+      <DependentUpon>201712280908166_authorid added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712280915393_authorid for sites modified.resx">
+      <DependentUpon>201712280915393_authorid for sites modified.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -25,16 +25,20 @@
              }
             }
             <div class="blog-img">
-                <a href="single.html">
-                    <img src="@imageSrc" alt="" />
+               @Html.ActionLink("", "DetailsSite", new { id=item.SiteId})
+                    <img src="@imageSrc" alt="" height="300" width="250"/>
                     <div class="blog-desc">
                         <h5>@Html.DisplayFor(modelItem => item.SiteName)</h5>
                         <h5>@Html.DisplayFor(modelItem => item.SiteLocation)</h5>
                         @*<p>@Html.DisplayFor(modelItem => item.SiteDescription)</p>*@
                         <div class="comment">
-                            @Html.ActionLink("Edit", "EditSite", new {Controller="Sites", id = item.SiteId }) |
-                            @Html.ActionLink("Details", "DetailsSite",new { Controller = "Sites", id = item.SiteId }) |
-                            @Html.ActionLink("Delete", "DeleteSite", new { Controller = "Sites", id = item.SiteId })
+                            @if (Request.IsAuthenticated) { 
+                                var a=Request.
+                             @Html.ActionLink("Edit", "EditSite", new { Controller = "Sites", id = item.SiteId }) 
+                             @Html.ActionLink("Delete", "DeleteSite", new { Controller = "Sites", id = item.SiteId })
+                            }
+                            @Html.ActionLink("Details", "DetailsSite", new { Controller = "Sites", id = item.SiteId }) 
+                           
                         </div>
                     </div>
                 </a>

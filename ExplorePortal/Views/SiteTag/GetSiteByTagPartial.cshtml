@@ -1,11 +1,15 @@
 ﻿@model PagedList.IPagedList<ExploreModel.Site>
 @using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
 
 <div id="Tarea">
-    @{ var odd = true; }
+    @{ var odd = true;
+      }
+
     @foreach (var item in Model)
     {
-
+        
+        var a = item.AuthorId;
         <div class="@(odd ? "blog-left":"blog-right")" id="displaypanel">
             @{ byte[] photo = item.Photo;
              string imageSrc = null;
@@ -23,9 +27,14 @@
                         <h5>@Html.DisplayFor(modelItem => item.SiteLocation)</h5>
                         @*<p>@Html.DisplayFor(modelItem => item.SiteDescription)</p>*@
                         <div class="comment">
-                            @Html.ActionLink("Edit", "EditSite", new { Controller = "Sites", id = item.SiteId }) |
-                            @Html.ActionLink("Details", "DetailsSite", new { Controller = "Sites", id = item.SiteId }) |
-                            @Html.ActionLink("Delete", "DeleteSite", new { Controller = "Sites", id = item.SiteId })
+                            
+                            @if (a == @ViewBag.userId)
+                            {
+                             @Html.ActionLink("Edit", "EditSite", new { Controller = "Sites", id = item.SiteId })<label>|</label>                               
+                                @Html.ActionLink("Delete", "DeleteSite", new { Controller = "Sites", id = item.SiteId })<label>|</label>                                                                                   
+                            }                          
+                            @Html.ActionLink("Details", "DetailsSite", new { Controller = "Sites", id = item.SiteId }) 
+                           
                         </div>
                     </div>
                 </a>
@@ -34,10 +43,10 @@
              odd = !odd;
 
     }
-    <div class="clear"></div>
-    <div class="dc_pagination dc_paginationA dc_paginationA06" id="myPager">
+    @*<div class="clear"></div>*@
+    @*<div class="dc_pagination dc_paginationA dc_paginationA06" id="myPager">*@
         <!--Code to show current page and page number-->
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
         @Html.PagedListPager(
                         Model,
                             page => Url.Action("GetSiteByTag", new
@@ -51,12 +60,12 @@
                         {
                             
                         })
-                    )
-    </div>    
+                    )*@
+    @*</div>*@    
 </div>
 
 
-<script>
+@*<script>
   
     $(function () {
         //to avoid returning this pages view while clicking page button
@@ -72,5 +81,5 @@
             return false;
         });
     });
-</script>
+</script>*@
 

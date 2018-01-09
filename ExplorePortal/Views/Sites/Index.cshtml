@@ -20,9 +20,9 @@
         }
     </style>
 
-            <div id="displaypanel"></div>
-               
-                    
+            <div id="displaypanel">
+                @Html.Partial("~/Views/SiteTag/GetSiteByTagPartial.cshtml", Model, new ViewDataDictionary { { "userId", @ViewBag.userId } })
+            </div>                  
      }
        
                     @section Search{
@@ -60,17 +60,17 @@
        
 @section scripts{
     <script>
-        $(document).ready(function () {
-            $.ajax({
-                url: '/SiteTag/GetSiteByTag',
-                contentType: "application/json; charset=utf-8",              
-                type: 'GET',
-                cache: false,
-                success: function (result) {
-                    $('#displaypanel').html(result);
-                }
-            })
-        });
+        //$(document).ready(function () {
+        //    $.ajax({
+        //        url: '/SiteTag/GetSiteByTag',
+        //        contentType: "application/json; charset=utf-8",              
+        //        type: 'GET',
+        //        cache: false,
+        //        success: function (result) {
+        //            $('#displaypanel').html(result);
+        //        }
+        //    })
+        //});
         
     $("#search").click(function () {
         searchItem();
@@ -104,5 +104,11 @@
 }
 
 
+@section Paging{
+    <!--Code to show curent page and page number-->
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page }))
+}
 

@@ -10,20 +10,23 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using PagedList.Mvc;
+using System.Security.Claims;
+using Microsoft.AspNet.Identity;
+
 
 namespace ExplorePortal.Controllers
 {
     public class SitesController : Controller
     {
         private ExploreDbContext db = new ExploreDbContext();
-
+        
         //
         // GET: /Sites/
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.Tags = db.Tags.ToList();
-
+            ViewBag.userId=User.Identity.GetUserId();
             //Add viewbag to save sortorder of table
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "site_desc" : "";
             ViewBag.LocSortParm = string.IsNullOrEmpty(sortOrder) ? "loc_desc" : "";
@@ -122,6 +125,15 @@ namespace ExplorePortal.Controllers
             {
                 return HttpNotFound();
             }
+            var thisuserId = User.Identity.GetUserId();
+            var siteAuthorId = db.Site.Where(x=>x.SiteId==id).Select(m=>m.AuthorId).FirstOrDefault();
+            if (thisuserId==siteAuthorId){
+                ViewBag.userId = siteAuthorId.ToString();
+            }
+            else
+            {
+                ViewBag.userId = 0;
+            }
             return View(site);
         }
 
@@ -131,33 +143,44 @@ namespace ExplorePortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditSite([Bind(Include = "SiteId,SiteName,SiteLocation,SiteDescription,Photo")] Site site, HttpPostedFileBase file)
         {
-            byte[] picarray = null;
-            if (file != null)
-            {
-                string pic = System.IO.Path.GetFileName(file.FileName);
-                string path = System.IO.Path.Combine(Server.MapPath("~/images"), pic);
-                //file is uploaded
-                file.SaveAs(path);
-                // save the image path path to the database or you can send image
-                // directly to database
-                // in-case if you want to store byte[] ie. for DB
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    file.InputStream.CopyTo(ms);
-                    picarray = ms.GetBuffer();
-                }
-            }
-            if (ModelState.IsValid)
-            {
-                site.Photo = picarray;
-                db.Entry(site).State = EntityState.Modified;
-                if (file == null)
-                {
-                    db.Entry(site).Property(m => m.Photo).IsModified = false;
-                }
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            var thisuserId =  User.Identity.GetUserId();
+           var siteAuthorId = db.Site.Where(m => m.SiteId == site.SiteId).Select(x => x.AuthorId).FirstOrDefault();
+           if (thisuserId == siteAuthorId)
+           {
+               byte[] picarray = null;
+               if (file != null)
+               {
+                   string pic = System.IO.Path.GetFileName(file.FileName);
+                   string path = System.IO.Path.Combine(Server.MapPath("~/images"), pic);
+                   //file is uploaded
+                   file.SaveAs(path);
+                   // save the image path path to the database or you can send image
+                   // directly to database
+                   // in-case if you want to store byte[] ie. for DB
+                   using (MemoryStream ms = new MemoryStream())
+                   {
+                       file.InputStream.CopyTo(ms);
+                       picarray = ms.GetBuffer();
+                   }
+               }
+               if (ModelState.IsValid)
+               {
+                   site.Photo = picarray;
+                   db.Entry(site).State = EntityState.Modified;
+                   if (file == null)
+                   {
+                       db.Entry(site).Property(m => m.Photo).IsModified = false;                     
+                   }
+                   db.Entry(site).Property(m => m.AuthorId).IsModified = false;
+                   db.SaveChanges();
+                   ViewBag.userId = siteAuthorId;
+                   return RedirectToAction("Index");
+               }
+           }
+           else
+           {
+               ViewBag.userId = "";
+           }
             return View(site);
         }
 
@@ -198,6 +221,8 @@ namespace ExplorePortal.Controllers
 
         public ActionResult DetailsSite(int? id)
         {
+            var thisuserId = User.Identity.GetUserId();
+            ViewBag.UserId = thisuserId;
             ViewBag.Tags = db.Tags.ToList();
             if (id == null)
             {
@@ -268,6 +293,21 @@ namespace ExplorePortal.Controllers
             site.SiteLocation = Request.Form[2];
             site.SiteDescription = System.Uri.UnescapeDataString( Request.Form[1]);
             site.Photo = picarray;
+
+            var thisuserId = User.Identity.GetUserId();
+            //var claimsIdentity = User.Identity as ClaimsIdentity;
+            //if (claimsIdentity != null)
+            //{
+            //    var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            //    if (userIdClaim != null)
+            //    {
+            //        var userIdValue = userIdClaim.Value;
+            //        site.AuthorId = userIdValue;
+            //    }
+            //}
+            if (thisuserId!=null){
+                site.AuthorId = thisuserId;
+            }
             SiteTagModel stm = new SiteTagModel();
             if (ModelState.IsValid)
             {
@@ -285,5 +325,24 @@ namespace ExplorePortal.Controllers
             }
             return View(site);
         }
+
+
+        //public string GetLoggedUserId()
+        //{
+        //    var claimsIdentity = User.Identity as ClaimsIdentity;
+        //    var userIdValue = "";
+        //    if (claimsIdentity != null)
+        //    {
+        //        var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+        //        if (userIdClaim != null)
+        //        {
+        //            userIdValue = userIdClaim.Value;                 
+        //        }            
+        //    }
+        //    return userIdValue;
+        //}
+
+
     }
 }
+

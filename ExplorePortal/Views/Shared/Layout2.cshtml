@@ -49,16 +49,15 @@
             <div class="cssmenu">
                 <ul>
                     <li class="active"><a href="/Explore">Home</a></li>
-                    <li>@if (Request.IsAuthenticated)
+                    @if (Request.IsAuthenticated)
                         {
-                            <label id="Logout">Logout</label>
+                        <li><a><label id="Logout">Logout</label></a></li>
+                        <li><a>@Html.ActionLink("MyBlog", "Index", "SiteAuthor", null, null)</a></li>
                         }
                         else
                         {
-                          @Html.ActionLink("Login","Login","Account",null,null)
-                        }
-                    </li>
-                    <li><a href="blog.html">Blog</a></li>
+                        <li><a>@Html.ActionLink("Login","Login","Account",null,null)</a></li>
+                        }                 
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
@@ -77,11 +76,14 @@
         <div class="project-wrapper">
            
                 <div class="project">
-                    @RenderSection("body", false);
+                    @RenderSection("body", false)
+                    <div class="clear"></div>
+                    <div class="dc_pagination dc_paginationA dc_paginationA06">
+                        @RenderSection("Paging", false)
+                    </div>
                 </div>
-           
             <div class="project-sidebar">               
-                        @RenderSection("Search",false);
+                        @RenderSection("Search",false)
                    
                 <div class="project-list">
                     <h4>Categories</h4>

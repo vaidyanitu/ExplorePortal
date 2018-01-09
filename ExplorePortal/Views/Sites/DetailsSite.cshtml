@@ -49,7 +49,10 @@ Details}
         </div>
         <br/>
         <p>
-            @Html.ActionLink("Edit", "EditSite", new { id = Model.SiteId }) |
+            @if (ViewBag.UserId == Model.AuthorId)
+            {
+              @Html.ActionLink("Edit", "EditSite", new { id = Model.SiteId })<label>|</label> 
+            }
             @Html.ActionLink("Back to List", "Index")
         </p>
     </div>

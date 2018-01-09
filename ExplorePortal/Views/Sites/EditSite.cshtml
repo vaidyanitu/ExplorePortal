@@ -31,7 +31,16 @@
                     }
 
                     <img src="@imageSrc" alt="Image" height="100" width="100" id="pic" />
-                    <input type="file" id="file" name="file">
+                    <input type="file" id="file" name="file">                  
+                    @if (ViewBag.userId != Model.AuthorId)
+                    {
+                        <script type="text/javascript">
+            window.onload = function () {
+                alert("You are not authorized to edit this site");
+                window.location = '/Explore';
+            };
+                        </script>
+                    }
 
                 </div>
             </div>

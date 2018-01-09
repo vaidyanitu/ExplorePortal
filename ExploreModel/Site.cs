@@ -30,5 +30,6 @@ namespace ExploreModel
        public List<Tag> Tags { get; set; }
        public int test { get; set; }
        public DateTime DateCreated { get; set; }
+       public string AuthorId { get; set; }
                  }
 }

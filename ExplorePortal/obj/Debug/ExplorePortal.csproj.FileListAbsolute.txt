@@ -67,3 +67,5 @@ C:\Users\nitu.vaidya\Documents\Visual Studio 2013\Projects\ExplorePortal\Explore
 C:\Users\nitu.vaidya\Documents\Visual Studio 2013\Projects\ExplorePortal\ExplorePortal\obj\Debug\ExplorePortal.pdb
 C:\Users\nitu.vaidya\Documents\Visual Studio 2013\Projects\ExplorePortal\ExplorePortal\obj\Debug\ExplorePortal.Migrations.datecreatedfieldaddedforsiteandtag.resources
 C:\Users\nitu.vaidya\Documents\Visual Studio 2013\Projects\ExplorePortal\ExplorePortal\obj\Debug\ExplorePortal.Migrations.authenticationtest.resources
+C:\Users\nitu.vaidya\Documents\Visual Studio 2013\Projects\ExplorePortal\ExplorePortal\obj\Debug\ExplorePortal.Migrations.authoridadded.resources
+C:\Users\nitu.vaidya\Documents\Visual Studio 2013\Projects\ExplorePortal\ExplorePortal\obj\Debug\ExplorePortal.Migrations.authoridforsitesmodified.resources

@@ -10,6 +10,7 @@ using ExploreModel;
 using ExplorePortal;
 using PagedList;
 using PagedList.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace ExplorePortal.Controllers
 {
@@ -131,6 +132,8 @@ namespace ExplorePortal.Controllers
         [AllowAnonymous]
         public ActionResult GetSiteByTag(string sortOrder, string currentFilter, string searchString, string tagname, int? page)
         {
+            string userId = User.Identity.GetUserId();
+            ViewBag.userId = userId==null?"":userId;
             var Hastag = tagname ?? "";
             ViewBag.TagName = tagname;
             ViewBag.CurrentSort = sortOrder;
