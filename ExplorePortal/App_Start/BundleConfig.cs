@@ -33,7 +33,7 @@ namespace ExplorePortal
             bundles.Add(new StyleBundle("~/Content/summernote").Include(
                 "~/Scripts/summernote/summernote.css"
                 ));
-            bundles.Add(new ScriptBundle("~/bundle/summernote").Include(
+            bundles.Add(new ScriptBundle("~/bundles/summernote").Include(
              "~/Scripts/summernote/summernote.js"
              ));  
         }

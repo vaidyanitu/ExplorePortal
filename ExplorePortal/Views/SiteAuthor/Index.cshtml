@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "SiteByAuthor";
     Layout = "~/Views/Shared/Layout2.cshtml";
-
+    ViewBag.tagname="";
 }
 @section Head{
 My Blog
@@ -19,7 +19,8 @@ My Blog
     </style>
 
     <div id="displaypanel">
-        @Html.Partial("~/Views/SiteTag/GetSiteByTagPartial.cshtml", Model, new ViewDataDictionary { { "userId", @ViewBag.userId } })
+        @Html.Action("GetSiteByTag","SiteTag")
+        @*@Html.Partial("~/Views/SiteTag/GetSiteByTagPartial.cshtml", Model, new ViewDataDictionary { { "userId", @ViewBag.userId } })*@
     </div>
 
     
@@ -80,5 +81,5 @@ My Blog
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
         @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page }))
+    new { page,tagname= @ViewBag.tagname }))
 }

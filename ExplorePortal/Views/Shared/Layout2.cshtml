@@ -237,22 +237,16 @@
     @RenderSection("scripts", required: false)
 
     <script>
-        
+        $(document).ready(function () {
+            var thisLink = localStorage.getItem('thisLink');
 
-        $(":button").click(function (e) {
-            var a = $(this).attr('id');
-            $.ajax({
-                url: '/SiteTag/GetSiteByTag',
-                contentType: "application/json; charset=utf-8",
-                data: { 'tagname': a },
-                type: 'GET',
-                cache: false,
-                success: function (result) {
-                    $('#displaypanel').html(result);
-                }
+            if (thisLink) {
+                $('li.active').removeClass('active');
+                $('#' + thisLink).addClass('active');
+            }
+        })
 
-            });
-        });
+       
 
         $("#Logout").click(function () {
             $.ajax({
@@ -278,12 +272,42 @@
             });
 
             var thisLink = localStorage.getItem('thisLink');
+           
             if (thisLink) {
                 $('li.active').removeClass('active');
                 $('#' + thisLink).addClass('active');
             }
+
+            if (thisLink == "Log") {
+                $('li.active').removeClass('active');
+                $('#' + "Home").addClass('active');
+            }
         });
 
     </script>
+    <script>
+        $(":button").click(function (e) {
+            var a = $(this).attr('id');
+       @*@Html.Action("Index", "Sites", new { tagname=a})*@
+                   $.ajax({
+                       url: 'SiteTag/GetSiteByTag',
+                       contentType: "application/json; charset=utf-8",
+                       data: { 'tagname': a },
+                       type: 'GET',
+                       cache: false,
+                       success: function (result) {
+                           $('#displaypanel').html(result);
+                           //.empty()
+                           //.append(
+                           //    $('<div />')
+                           //        .append(result)
+                           //        .find('#displaypanel')
+                           //);
+                       }
+
+                   });
+        });
+    </script>
+
 
 </html>

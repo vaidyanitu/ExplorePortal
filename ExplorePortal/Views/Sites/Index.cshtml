@@ -21,7 +21,8 @@
     </style>
 
             <div id="displaypanel">
-                @Html.Partial("~/Views/SiteTag/GetSiteByTagPartial.cshtml", Model, new ViewDataDictionary { { "userId", @ViewBag.userId } })
+                @Html.Action("GetSiteByTag", "SiteTag", new { tagname=@ViewBag.tagname})
+                @*@Html.Partial("~/Views/SiteTag/GetSiteByTagPartial.cshtml", Model, new ViewDataDictionary { { "userId", @ViewBag.userId } })*@
             </div>                  
      }
        
@@ -54,7 +55,7 @@
                 @section Tags{
                 @foreach (var item in ViewBag.Tags)
                 {
-                    <button id="@item.TagName" >@item.TagName</button>
+                    <button id="@item.TagName"> @item.TagName</button>
                 }}
            
        
@@ -77,7 +78,7 @@
     })
 
 
-    function searchItem() {
+    function searchItem() {  
         var searchdata = $("#searchString").val();
         $.ajax({
             url: '/SiteTag/GetSiteByTag',
@@ -104,11 +105,11 @@
 }
 
 
-@section Paging{
-    <!--Code to show curent page and page number-->
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @section Paging{
+        <!--Code to show curent page and page number-->
+        @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page }))
-}
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, tagname = @ViewBag.tagname }))*@
+    }
 

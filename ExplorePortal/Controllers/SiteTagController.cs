@@ -130,17 +130,13 @@ namespace ExplorePortal.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult GetSiteByTag(string sortOrder, string currentFilter, string searchString, string tagname, int? page)
+        public ActionResult GetSiteByTag( string currentFilter, string searchString, string tagname, int? page)
         {
             string userId = User.Identity.GetUserId();
             ViewBag.userId = userId==null?"":userId;
             var Hastag = tagname ?? "";
             ViewBag.TagName = tagname;
-            ViewBag.CurrentSort = sortOrder;
             ViewBag.Tags = db.Tags.ToList();
-            //Add viewbag to save sortorder of table
-            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "site_desc" : "";
-            ViewBag.LocSortParm = string.IsNullOrEmpty(sortOrder) ? "loc_desc" : "";
             var ModelList = new List<Site>();
 
             if (searchString != null)
@@ -171,19 +167,14 @@ namespace ExplorePortal.Controllers
                         s.SiteLocation.Contains(searchString));
                 }
 
-                //Switch action according to sortOrder
-                switch (sortOrder)
+                if (!string.IsNullOrEmpty(tagname))
                 {
-                    case "site_desc":
-                        ModelList = model.OrderByDescending(s => s.SiteName).ToList();
-                        break;
-                    case "loc_desc":
-                        ModelList = model.OrderByDescending(s => s.SiteLocation).ToList();
-                        break;
-                    default:
-                        ModelList = model.OrderBy(s => s.SiteName).ToList();
-                        break;
+                    var tagid = db.Tags.Where(x => x.TagName == tagname).Select(x => x.TagId).First();
+                    var sitewithtag = db.SiteTagModel.Where(x => x.TagId == tagid).Select(x => x.SiteId).ToList();
+                    model = model.Where(s => sitewithtag.Contains(s.SiteId));
                 }
+                 ModelList = model.OrderBy(s => s.SiteName).ToList();
+                
 
                 int pageNumber = (page ?? 1);
                 int pageSize = 4;

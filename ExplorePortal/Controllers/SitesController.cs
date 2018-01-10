@@ -22,56 +22,63 @@ namespace ExplorePortal.Controllers
         
         //
         // GET: /Sites/
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, string tagname)
         {
-            ViewBag.CurrentSort = sortOrder;
+            //ViewBag.CurrentSort = sortOrder;
             ViewBag.Tags = db.Tags.ToList();
-            ViewBag.userId=User.Identity.GetUserId();
-            //Add viewbag to save sortorder of table
-            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "site_desc" : "";
-            ViewBag.LocSortParm = string.IsNullOrEmpty(sortOrder) ? "loc_desc" : "";
-            var ModelList = new List<Site>();
+            //ViewBag.userId=User.Identity.GetUserId();
+            ViewBag.tagname = tagname == null ? "" : tagname;
+            ////Add viewbag to save sortorder of table
+            //ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "site_desc" : "";
+            //ViewBag.LocSortParm = string.IsNullOrEmpty(sortOrder) ? "loc_desc" : "";
+            //var ModelList = new List<Site>();
 
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+            //if (searchString != null)
+            //{
+            //    page = 1;
+            //}
+            //else
+            //{
+            //    searchString = currentFilter;
+            //}
 
-            ViewBag.CurrentFilter = searchString;
+            //ViewBag.CurrentFilter = searchString;
 
-            using (var context = new ExploreDbContext())
-            {
-                var model = from s in context.Site select s;
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    model = model.Where(s => s.SiteName.Contains(searchString) ||
-                        s.SiteLocation.Contains(searchString));
-                }
+            //using (var context = new ExploreDbContext())
+            //{
+            //    var model = from s in context.Site select s;
+            //    if (!string.IsNullOrEmpty(searchString))
+            //    {
+            //        model = model.Where(s => s.SiteName.Contains(searchString) ||
+            //            s.SiteLocation.Contains(searchString));
+            //    }
+            //    if (!string.IsNullOrEmpty(tagname))
+            //    {
+            //        var tgId = db.Tags.Where(s => s.TagName == tagname).Select(m => m.TagId).First();
+            //        var sttgId = db.SiteTagModel.Where(s => s.TagId == tgId).Select(m => m.SiteId).ToList();
+            //        model = model.Where(s => sttgId.Contains(s.SiteId));
+            //    }
 
-                //Switch action according to sortOrder
-                switch (sortOrder)
-                {
-                    case "site_desc":
-                        ModelList = model.OrderByDescending(s => s.SiteName).ToList();
-                        break;
-                    case "loc_desc":
-                        ModelList = model.OrderByDescending(s => s.SiteLocation).ToList();
-                        break;
-                    default:
-                        ModelList = model.OrderBy(s => s.SiteName).ToList();
-                        break;
-                }
+            //    //Switch action according to sortOrder
+            //    switch (sortOrder)
+            //    {
+            //        case "site_desc":
+            //            ModelList = model.OrderByDescending(s => s.SiteName).ToList();
+            //            break;
+            //        case "loc_desc":
+            //            ModelList = model.OrderByDescending(s => s.SiteLocation).ToList();
+            //            break;
+            //        default:
+            //            ModelList = model.OrderBy(s => s.SiteName).ToList();
+            //            break;
+            //    }
 
-                int pageNumber = (page ?? 1);
-                int pageSize = 4;
-                ModelList = model.ToList();
-                return View(ModelList.ToPagedList(pageNumber, pageSize));
-            }
-
+            //    int pageNumber = (page ?? 1);
+            //    int pageSize = 4;
+            //    ModelList = model.ToList();
+            //    return View(ModelList.ToPagedList(pageNumber, pageSize));
+            //}
+            return View();
         }
 
         [Authorize]

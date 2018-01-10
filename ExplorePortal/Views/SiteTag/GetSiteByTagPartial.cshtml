@@ -43,25 +43,24 @@
              odd = !odd;
 
     }
-    @*<div class="clear"></div>*@
-    @*<div class="dc_pagination dc_paginationA dc_paginationA06" id="myPager">*@
+    <div class="clear"></div>
+    <div class="dc_pagination dc_paginationA dc_paginationA06" id="myPager">
         <!--Code to show current page and page number-->
-        @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
         @Html.PagedListPager(
                         Model,
-                            page => Url.Action("GetSiteByTag", new
+                            page => Url.Action("Index", "Sites",new
                             {
                                 page,
-                                sortOrder = ViewBag.CurrentSort,
                                 currentFilter = ViewBag.CurrentFilter,
                                 tagname = ViewBag.TagName
-                            }),
+                           }),
                         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
                         {
                             
                         })
-                    )*@
-    @*</div>*@    
+                    )
+    </div>    
 </div>
 
 
