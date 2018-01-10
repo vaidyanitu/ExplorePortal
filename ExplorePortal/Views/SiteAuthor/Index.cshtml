@@ -19,8 +19,10 @@ My Blog
     </style>
 
     <div id="displaypanel">
-        @Html.Action("GetSiteByTag","SiteTag")
+        @*@Html.Action("GetSiteByTag","SiteTag")*@
         @*@Html.Partial("~/Views/SiteTag/GetSiteByTagPartial.cshtml", Model, new ViewDataDictionary { { "userId", @ViewBag.userId } })*@
+    
+        @Html.Partial("SiteBlock",Model)
     </div>
 
     

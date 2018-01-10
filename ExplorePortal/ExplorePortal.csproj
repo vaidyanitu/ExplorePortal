@@ -500,6 +500,7 @@
     <Content Include="Views\Account\View1.cshtml" />
     <Content Include="Views\Shared\_SearchSitesPartial.cshtml" />
     <Content Include="Views\SiteAuthor\Index.cshtml" />
+    <Content Include="Views\Shared\SiteBlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
