@@ -501,6 +501,7 @@
     <Content Include="Views\Shared\_SearchSitesPartial.cshtml" />
     <Content Include="Views\SiteAuthor\Index.cshtml" />
     <Content Include="Views\Shared\SiteBlock.cshtml" />
+    <Content Include="Views\Shared\_SearchPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

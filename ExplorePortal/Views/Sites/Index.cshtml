@@ -30,18 +30,7 @@
                     @*@using (Html.BeginForm())
                     {*@
                         
-                <div class="project-list">
-                    <div class="search_box">
-                        <p>
-                            <center>
-                                find by site or location:<br />
-                                <input type="text" style="background-color:none; border:none" id="searchString" onkeypress="searchItemKey()" /><input type="submit" value="  " id="search" class="btnbg" />
-                                @*@Html.TextBox("searchString")*@
-                            </center>
-                        </p>
-                    </div>
-                </div>
-
+             @Html.Partial("_SearchPartial")
 
                       
                     @*}

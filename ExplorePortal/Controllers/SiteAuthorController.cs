@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using PagedList;
 using PagedList.Mvc;
 using Microsoft.AspNet.Identity;
+using ExploreModel;
 
 namespace ExplorePortal.Controllers
 {
@@ -16,25 +17,23 @@ namespace ExplorePortal.Controllers
         //
         // GET: /SiteAuthor/
         [Authorize]
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string searchstring)
         {
             ViewBag.Tags = db.Tags.ToList();
-            ViewBag.userId = User.Identity.GetUserId();
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            if (claimsIdentity != null)
+            string userId = User.Identity.GetUserId();
+            ViewBag.userId = userId;
+            ViewBag.searchstring = searchstring;
+            var Modellist = new List<Site>();
+            int pageNumber = (page ?? 1);
+            int pageSize = 4;
+            var model = db.Site.Where(x => x.AuthorId == userId);
+            if (!string.IsNullOrEmpty(searchstring))
             {
-                int pageNumber = (page ?? 1);
-                int pageSize = 4;
-                var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-                if (userIdClaim != null)
-                {
-                    var userIdValue = userIdClaim.Value;
-                    var model=db.Site.Where(x => x.AuthorId == userIdValue);
-                    model=model.OrderBy(s => s.SiteName);
-                    return View(model.ToPagedList(pageNumber,pageSize));
-                }
+                model = model.Where(x => x.SiteLocation.Contains(searchstring) || x.SiteName.Contains(searchstring));
             }
-            return View();                           
-        }
+            Modellist = model.OrderBy(x => x.SiteName).ToList();
+            return View(Modellist.ToPagedList(pageNumber, pageSize));
+        }                                  
+       
 	}
 }
