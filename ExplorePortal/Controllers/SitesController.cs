@@ -28,56 +28,9 @@ namespace ExplorePortal.Controllers
             ViewBag.Tags = db.Tags.ToList();
             //ViewBag.userId=User.Identity.GetUserId();
             ViewBag.tagname = tagname == null ? "" : tagname;
-            ////Add viewbag to save sortorder of table
-            //ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "site_desc" : "";
-            //ViewBag.LocSortParm = string.IsNullOrEmpty(sortOrder) ? "loc_desc" : "";
-            //var ModelList = new List<Site>();
 
-            //if (searchString != null)
-            //{
-            //    page = 1;
-            //}
-            //else
-            //{
-            //    searchString = currentFilter;
-            //}
-
-            //ViewBag.CurrentFilter = searchString;
-
-            //using (var context = new ExploreDbContext())
-            //{
-            //    var model = from s in context.Site select s;
-            //    if (!string.IsNullOrEmpty(searchString))
-            //    {
-            //        model = model.Where(s => s.SiteName.Contains(searchString) ||
-            //            s.SiteLocation.Contains(searchString));
-            //    }
-            //    if (!string.IsNullOrEmpty(tagname))
-            //    {
-            //        var tgId = db.Tags.Where(s => s.TagName == tagname).Select(m => m.TagId).First();
-            //        var sttgId = db.SiteTagModel.Where(s => s.TagId == tgId).Select(m => m.SiteId).ToList();
-            //        model = model.Where(s => sttgId.Contains(s.SiteId));
-            //    }
-
-            //    //Switch action according to sortOrder
-            //    switch (sortOrder)
-            //    {
-            //        case "site_desc":
-            //            ModelList = model.OrderByDescending(s => s.SiteName).ToList();
-            //            break;
-            //        case "loc_desc":
-            //            ModelList = model.OrderByDescending(s => s.SiteLocation).ToList();
-            //            break;
-            //        default:
-            //            ModelList = model.OrderBy(s => s.SiteName).ToList();
-            //            break;
-            //    }
-
-            //    int pageNumber = (page ?? 1);
-            //    int pageSize = 4;
-            //    ModelList = model.ToList();
-            //    return View(ModelList.ToPagedList(pageNumber, pageSize));
-            //}
+         
+          
             return View();
         }
 
@@ -154,25 +107,20 @@ namespace ExplorePortal.Controllers
            var siteAuthorId = db.Site.Where(m => m.SiteId == site.SiteId).Select(x => x.AuthorId).FirstOrDefault();
            if (thisuserId == siteAuthorId)
            {
-               byte[] picarray = null;
-               if (file != null)
+               if (Request.Files.Count > 0)
                {
-                   string pic = System.IO.Path.GetFileName(file.FileName);
-                   string path = System.IO.Path.Combine(Server.MapPath("~/images"), pic);
-                   //file is uploaded
-                   file.SaveAs(path);
-                   // save the image path path to the database or you can send image
-                   // directly to database
-                   // in-case if you want to store byte[] ie. for DB
-                   using (MemoryStream ms = new MemoryStream())
+                    file = Request.Files[0];
+
+                   if (file != null && file.ContentLength > 0)
                    {
-                       file.InputStream.CopyTo(ms);
-                       picarray = ms.GetBuffer();
+                       var fileName = Path.GetFileName(file.FileName);
+                       var path = Path.Combine(Server.MapPath("~/Resources/"), fileName);
+                       file.SaveAs(path);
+                       site.Photo = path;
                    }
                }
                if (ModelState.IsValid)
                {
-                   site.Photo = picarray;
                    db.Entry(site).State = EntityState.Modified;
                    if (file == null)
                    {
@@ -246,36 +194,22 @@ namespace ExplorePortal.Controllers
         [Authorize]
         [HttpPost]
         public ActionResult AddModelTag()
-        {
-            byte[] picarray = null;
-            //  Get all files from Request object  
-            HttpFileCollectionBase files = Request.Files;
-            for (int i = 0; i < files.Count; i++)
+       {
+            Site site = new Site();
+
+            if (Request.Files.Count > 0)
             {
-                HttpPostedFileBase file = files[i];
-                string fname;
+                var file = Request.Files[0];
 
-                // Checking for Internet Explorer  
-                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                if (file != null && file.ContentLength > 0)
                 {
-                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                    fname = testfiles[testfiles.Length - 1];
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Resources/"), fileName);
+         
+                    file.SaveAs(path);
+             
+                    site.Photo = path;
                 }
-                else
-                {
-                    fname = file.FileName;
-                }
-
-                // Get the complete folder path and store the file inside it.  
-                fname = Path.Combine(Server.MapPath("~/images"), fname);
-                file.SaveAs(fname);
-
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    file.InputStream.CopyTo(ms);
-                    picarray = ms.GetBuffer();
-                }
-
             }
 
             //,SiteName,SiteLocation,SiteDescription
@@ -295,23 +229,12 @@ namespace ExplorePortal.Controllers
                 k++;
             }
 
-            Site site = new Site();
+           
             site.SiteName = Request.Form[0];
             site.SiteLocation = Request.Form[2];
             site.SiteDescription = System.Uri.UnescapeDataString( Request.Form[1]);
-            site.Photo = picarray;
-
             var thisuserId = User.Identity.GetUserId();
-            //var claimsIdentity = User.Identity as ClaimsIdentity;
-            //if (claimsIdentity != null)
-            //{
-            //    var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-            //    if (userIdClaim != null)
-            //    {
-            //        var userIdValue = userIdClaim.Value;
-            //        site.AuthorId = userIdValue;
-            //    }
-            //}
+          
             if (thisuserId!=null){
                 site.AuthorId = thisuserId;
             }
@@ -332,23 +255,6 @@ namespace ExplorePortal.Controllers
             }
             return View(site);
         }
-
-
-        //public string GetLoggedUserId()
-        //{
-        //    var claimsIdentity = User.Identity as ClaimsIdentity;
-        //    var userIdValue = "";
-        //    if (claimsIdentity != null)
-        //    {
-        //        var userIdClaim = claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-        //        if (userIdClaim != null)
-        //        {
-        //            userIdValue = userIdClaim.Value;                 
-        //        }            
-        //    }
-        //    return userIdValue;
-        //}
-
 
     }
 }

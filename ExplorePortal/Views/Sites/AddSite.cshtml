@@ -46,16 +46,7 @@
             <div class="form-group">
                 @*@Html.LabelFor(model => model.Photo, new { @class = "control-label col-md-2" })*@
                 <div class="col-md-10">
-                    @{ byte[] photo = null;
-                       string imageSrc = null;
-                       if (photo != null)
-                       {
-                           var imageBase64 = Convert.ToBase64String(Model.Photo.ToArray());
-                           imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
-                       }
-                    }
-
-                    <img src="@imageSrc" alt="Image" height="100" width="100" id="pic" />
+                    <img src="~/images/about-img9.jpg"  alt="Image" height="100" width="100" id="pic" />
                     <input type="file" id="file" name="file">
                 </div>
             </div>

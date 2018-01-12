@@ -7,17 +7,12 @@
 
     var a = item.AuthorId;
     <div class="@(odd ? "blog-left":"blog-right")" id="displaypanel">
-        @{ byte[] photo = item.Photo;
-         string imageSrc = null;
-         if (photo != null)
-         {
-             var imageBase64 = Convert.ToBase64String(item.Photo.ToArray());
-             imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
-         }
-        }
+       @{
+           
+       }
         <div class="blog-img">
             <a href="single.html">
-                <img src="@imageSrc" alt="" />
+                <img src="~/Resources/@Path.GetFileName(item.Photo)" alt="" />
                 <div class="blog-desc">
                     <h5>@Html.DisplayFor(modelItem => item.SiteName)</h5>
                     <h5>@Html.DisplayFor(modelItem => item.SiteLocation)</h5>

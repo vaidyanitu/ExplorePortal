@@ -21,15 +21,7 @@ Details}
     </style>
     @{var desc = Model.SiteDescription;}
     <div>
-        @{ byte[] photo = Model.Photo;
-         string imageSrc = null;
-         if (photo != null)
-         {
-             var imageBase64 = Convert.ToBase64String(Model.Photo.ToArray());
-             imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
-         }
-        }
-        <img src="@imageSrc" alt="Image" id="pic" class="displayed" height="600px" width="1000px" />
+        <img src="~/Resources/@Path.GetFileName(Model.Photo)" alt="Image" id="pic" class="displayed" height="600px" width="1000px" />
     </div>
    
     <div class="blog-desc">

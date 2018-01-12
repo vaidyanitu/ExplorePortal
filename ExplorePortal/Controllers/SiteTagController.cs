@@ -172,7 +172,9 @@ namespace ExplorePortal.Controllers
                     var tagid = db.Tags.Where(x => x.TagName == tagname).Select(x => x.TagId).First();
                     var sitewithtag = db.SiteTagModel.Where(x => x.TagId == tagid).Select(x => x.SiteId).ToList();
                     model = model.Where(s => sitewithtag.Contains(s.SiteId));
+
                 }
+                
                  ModelList = model.OrderBy(s => s.SiteName).ToList();
                 
 

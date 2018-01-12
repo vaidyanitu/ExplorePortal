@@ -41,17 +41,7 @@
         </dt>
 
         <dd>
-
-            @{ byte[] photo = Model.Photo;
-             string imageSrc = null;
-             if (photo != null)
-             {
-                 var imageBase64 = Convert.ToBase64String(Model.Photo.ToArray());
-                 imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
-             }
-            }
-
-            <img src="@imageSrc" alt="Image" height="100" width="100" />
+            <img src="~/Resources/@Path.GetFileName(Model.Photo)" alt="Image" height="100" width="100" />
         </dd>
 
     </dl>

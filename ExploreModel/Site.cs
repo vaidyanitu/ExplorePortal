@@ -25,8 +25,7 @@ namespace ExploreModel
        [AllowHtml]
        [Display(Name="Description")]
         public String SiteDescription { get; set; }
-       [Column(TypeName="Image")]
-       public byte[] Photo { get; set; }
+       public string Photo { get; set; }
        public List<Tag> Tags { get; set; }
        public int test { get; set; }
        public DateTime DateCreated { get; set; }

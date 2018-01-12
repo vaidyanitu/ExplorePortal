@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201712280915393_authorid for sites modified.Designer.cs">
       <DependentUpon>201712280915393_authorid for sites modified.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801120951532_sitephoto datatype modified to string.cs" />
+    <Compile Include="Migrations\201801120951532_sitephoto datatype modified to string.Designer.cs">
+      <DependentUpon>201801120951532_sitephoto datatype modified to string.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -507,6 +511,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="BLL\" />
     <Folder Include="obj\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -548,6 +553,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712280915393_authorid for sites modified.resx">
       <DependentUpon>201712280915393_authorid for sites modified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801120951532_sitephoto datatype modified to string.resx">
+      <DependentUpon>201801120951532_sitephoto datatype modified to string.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
